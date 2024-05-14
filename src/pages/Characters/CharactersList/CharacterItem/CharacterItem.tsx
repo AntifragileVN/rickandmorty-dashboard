@@ -7,20 +7,27 @@ import { formatId } from '@/utils/formatId';
 
 type CharacterItemProps = {
 	character: Character;
+	onCharacterItemClick: (character: Character) => void;
 };
 
-const CharacterItem = ({ character }: CharacterItemProps) => {
+const CharacterItem = ({ character, onCharacterItemClick }: CharacterItemProps) => {
 	const { id, name, image, location, status } = character;
+
 	return (
-		<li className="relative overflow-hidden rounded-md hover:animate-card-bounce ">
-			<div className="absolute flex items-center justify-center top-8 right-4 w-10 h-10 bg-white rounded-full -translate-y-1/2 -translate-x-1/2">
+		<li className="relative overflow-hidden max-w-[300px] text-wrap rounded-md hover:animate-card-bounce">
+			<div className="absolute flex items-center justify-center top-8 right-[1%] w-10 h-10 bg-white rounded-full -translate-y-1/2 -translate-x-1/2">
 				{status === 'Dead' ? (
 					<img className="h-3/4" src={dead} alt="dead" />
 				) : (
 					<img className="h-3/4" src={alive} alt="alive" />
 				)}
 			</div>
-			<img className="mb-1 rounded-md block" src={image} alt="" />
+			<img
+				className="mb-1 rounded-md block w-full"
+				src={image}
+				alt={`${name} image`}
+				onClick={() => onCharacterItemClick(character)}
+			/>
 			<div className="pl-2 ">
 				<p className="font-medium mb-2 text-gray-400">#{formatId(id)}</p>
 				<p className="font-semibold ">{name}</p>

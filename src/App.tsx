@@ -1,17 +1,17 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getCharacters } from 'rickmortyapi';
+import { Route, Routes } from 'react-router-dom';
 
-import CharactersList from './pages/Characters/CharactersList/CharactersList';
+import { SharedLayout } from '@/components/SharedLayout/SharedLayout';
+
+import Characters from './pages/Characters/Characters';
 
 function App() {
-	const { data, isError } = useQuery({
-		queryKey: ['characters'],
-		queryFn: getCharacters,
-	});
-
-	console.log(data);
-
-	return <>{data ? <CharactersList characters={data.data.results} /> : null}</>;
+	return (
+		<Routes>
+			<Route path="/" element={<SharedLayout />}>
+				<Route index element={<Characters />} />
+			</Route>
+		</Routes>
+	);
 }
 
 export default App;
