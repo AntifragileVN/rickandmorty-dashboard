@@ -31,7 +31,9 @@ const Characters = () => {
 	const filterGender = searchParams.get('gender') ?? '';
 	const sortMethod: SortMethod = (searchParams.get('sortBy') as SortMethod) ?? '';
 
-	const [currentPage, setCurrentPage] = useState<number>(1);
+	const [currentPage, setCurrentPage] = useState<number>(
+		parseInt(searchParams.get('page') || '1', 10),
+	);
 	const [pagesCount, setPagesCount] = useState<number>(1);
 
 	const getQueryFn = useCallback(() => {
