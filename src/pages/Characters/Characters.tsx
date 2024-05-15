@@ -6,7 +6,9 @@ import { getCharacters } from 'rickmortyapi';
 import Modal from '@/components/Modal/Modal';
 import Pagination from '@/components/Pagination/Pagination';
 
-import { Character } from '@/shared/types';
+import { Character, SortMethod } from '@/shared/types';
+
+import { sortCharacters } from '@/utils/sortCharacters/sortCharacters';
 
 import CharacterCard from './CharacterCard/CharacterCard';
 import CharactersList from './CharactersList/CharactersList';
@@ -20,11 +22,14 @@ type Query = {
 
 const Characters = () => {
 	const [showModal, setShowModal] = useState<boolean>(false);
+	const [charactersData, setCharactersData] = useState<Character[]>([]);
 	const [characterInfo, setCharacterInfo] = useState<Character | null>(null);
 	const [searchParams] = useSearchParams();
+
 	const searchedCharacter = searchParams.get('character') ?? '';
 	const filterStatus = searchParams.get('status') ?? '';
 	const filterGender = searchParams.get('gender') ?? '';
+	const sortMethod: SortMethod = (searchParams.get('sortBy') as SortMethod) ?? '';
 
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [pagesCount, setPagesCount] = useState<number>(1);
@@ -59,11 +64,24 @@ const Characters = () => {
 	});
 
 	useEffect(() => {
+		if (data?.data?.results) {
+			setCharactersData(data.data.results);
+		}
+	}, [data]);
+
+	useEffect(() => {
 		if (data?.data?.info?.pages) {
 			setPagesCount(data?.data?.info?.pages);
 		}
 		console.log(pagesCount);
 	}, [data, pagesCount]);
+
+	useEffect(() => {
+		if (charactersData && sortMethod) {
+			const sortedCharacters = sortCharacters(sortMethod, charactersData);
+			setCharactersData(sortedCharacters);
+		}
+	}, [charactersData, sortMethod]);
 
 	const onCloseModal = () => {
 		setShowModal(false);

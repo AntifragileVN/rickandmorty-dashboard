@@ -18,3 +18,5 @@ export type Character = {
 	url: string;
 	created: string;
 };
+
+export type SortMethod = 'name' | 'gender' | 'location';

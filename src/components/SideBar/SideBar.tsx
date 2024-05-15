@@ -11,31 +11,22 @@ type SideBarProps = {
 const SideBar = ({ isSideBarOpen, toggleSideBar }: SideBarProps) => {
 	const [isStatusItemOpen, setIsStatusItemOpen] = useState<boolean>(false);
 	const [isGenderFilterOpen, setIsGenderFilterOpen] = useState<boolean>(false);
+	const [isSortFieldOpen, setIsSortFieldOpen] = useState<boolean>(false);
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [currentStatus, setCurrentStatus] = useState<string>(
 		searchParams.get('status') || '',
 	);
 	const [gender, setGender] = useState<string>(searchParams.get('gender') || '');
-
-	useEffect(() => {
-		setSearchParams((searchParams) => {
-			if (currentStatus === '') {
-				searchParams.delete('status');
-			}
-			if (gender === '') {
-				searchParams.delete('gender');
-			}
-			return searchParams;
-		});
-	}, [currentStatus, gender, setSearchParams]);
+	const [sortMethod, setSortMethod] = useState<string>(searchParams.get('sort') || '');
 
 	useEffect(() => {
 		setSearchParams((searchParams) => {
 			gender && searchParams.set('gender', gender);
 			currentStatus && searchParams.set('status', currentStatus);
+			sortMethod && searchParams.set('sortBy', sortMethod);
 			return searchParams;
 		});
-	}, [gender, currentStatus, setSearchParams]);
+	}, [gender, currentStatus, sortMethod, setSearchParams]);
 
 	const onStatusChange = (value: string): void => {
 		setCurrentStatus(value);
@@ -45,15 +36,21 @@ const SideBar = ({ isSideBarOpen, toggleSideBar }: SideBarProps) => {
 		setGender(value);
 	};
 
+	const onSortMethodChange = (value: string): void => {
+		setSortMethod(value);
+	};
+
 	const clearAllFilters = () => {
 		setSearchParams((searchParams) => {
 			searchParams.delete('status');
 			searchParams.delete('gender');
+			searchParams.delete('sortBy');
 			return searchParams;
 		});
 
 		setCurrentStatus('');
 		setGender('');
+		setSortMethod('');
 	};
 	return (
 		<div
@@ -157,6 +154,84 @@ const SideBar = ({ isSideBarOpen, toggleSideBar }: SideBarProps) => {
 								title="Uknown"
 								currentValue={currentStatus}
 								onChange={onStatusChange}
+							/>
+						</li>
+					</ul>
+					<a
+						className="flex items-center duration-300 px-4 py-2 text-gray-100 hover:bg-gray-700"
+						onClick={() => setIsSortFieldOpen((prev) => !prev)}
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							className="h-6 w-6 mr-2"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M6 18L18 6M6 6l12 12"
+							/>
+						</svg>
+						<div className="flex justify-between w-full items-center">
+							Sort By
+							<span
+								className={`text-sm ${isSortFieldOpen ? 'rotate-180' : ''}`}
+								id="arrow"
+							>
+								<svg
+									id="icon1"
+									className="transform rotate-180"
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path
+										d="M18 15L12 9L6 15"
+										stroke="currentColor"
+										stroke-width="1.5"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									/>
+								</svg>
+							</span>
+						</div>
+					</a>
+					<ul
+						className={`text-left flex flex-col text-sm mt-2 w-4/5 mx-auto pl-4 text-gray-200 font-bold ${isSortFieldOpen ? '' : 'hidden'}`}
+					>
+						<li className="mb-2 inline-block">
+							<Radio
+								name="sort"
+								id="sortGender"
+								value="gender"
+								currentValue={sortMethod}
+								title="Gender"
+								onChange={onSortMethodChange}
+							/>
+						</li>
+						<li className="mb-2 inline-block">
+							<Radio
+								name="sort"
+								id="sortStatus"
+								value="status"
+								title="Status"
+								currentValue={sortMethod}
+								onChange={onSortMethodChange}
+							/>
+						</li>
+						<li className="mb-2 inline-block">
+							<Radio
+								name="sort"
+								id="sortLocation"
+								value="location"
+								title="Location"
+								currentValue={sortMethod}
+								onChange={onSortMethodChange}
 							/>
 						</li>
 					</ul>
