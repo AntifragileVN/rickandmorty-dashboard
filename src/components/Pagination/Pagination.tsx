@@ -7,9 +7,7 @@ type PaginationProps = {
 };
 const Pagination = ({ currentPage, setCurrentPage }: PaginationProps) => {
 	const [num, setNum] = useState(1);
-	const [cur, setCur] = useState(1);
-
-	const [searchParams, setSearchParams] = useSearchParams();
+	const [, setSearchParams] = useSearchParams();
 
 	useEffect(() => {
 		if (currentPage === 1) {
