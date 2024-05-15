@@ -54,7 +54,7 @@ const SideBar = ({ isSideBarOpen, toggleSideBar }: SideBarProps) => {
 	};
 	return (
 		<div
-			className={`absolute z-20 min-h-screen overflow-y-auto bg-gray-800 transition-transform transform ease-in-out duration-300 md:flex flex-col w-64 ${isSideBarOpen ? '-translate-x-full' : 'hidden'}`}
+			className={`absolute flex z-20 min-h-screen overflow-y-auto bg-gray-800 transition-transform transform ease-in-out duration-300  flex-col w-64 ${isSideBarOpen ? '-translate-x-full' : 'hidden'}`}
 		>
 			<div className="flex items-center justify-between h-16 px-6 bg-gray-900">
 				<span className="text-white font-bold uppercase">Filters</span>
