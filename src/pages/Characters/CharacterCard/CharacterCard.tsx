@@ -1,9 +1,8 @@
-import React from 'react';
-
 import { Character } from '@/shared/types';
 
 import alive from '@/assets/alive.svg';
 import dead from '@/assets/dead.svg';
+import unknown from '@/assets/unknown.svg';
 
 import { formatId } from '@/utils/formatId';
 
@@ -18,10 +17,14 @@ const CharacterCard = ({ characterInfo }: CharacterCardProps) => {
 			<div className="relative">
 				<div className="absolute flex items-center justify-center top-8 right-[1%] w-10 h-10 bg-white rounded-full -translate-y-1/2 -translate-x-1/2">
 					{status === 'Dead' ? (
-						<img className="h-6" src={dead} alt="dead" />
-					) : (
-						<img className="h-8" src={alive} alt="alive" />
-					)}
+						<img className="h-3/4" src={dead} alt="dead" />
+					) : null}
+					{status === 'Alive' ? (
+						<img className="h-3/4" src={alive} alt="alive" />
+					) : null}
+					{status === 'unknown' ? (
+						<img className="h-3/4" src={unknown} alt="unknown" />
+					) : null}
 				</div>
 				<img className="mb-1 rounded-md block" src={image} alt={name} />
 			</div>
