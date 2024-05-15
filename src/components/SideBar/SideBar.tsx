@@ -1,13 +1,14 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import Radio from '@/components/Radio/Radio';
 
 type SideBarProps = {
 	isSideBarOpen: boolean;
+	toggleSideBar: () => void;
 };
 
-const SideBar = ({ isSideBarOpen }: SideBarProps) => {
+const SideBar = ({ isSideBarOpen, toggleSideBar }: SideBarProps) => {
 	const [isStatusItemOpen, setIsStatusItemOpen] = useState<boolean>(false);
 	const [isGenderFilterOpen, setIsGenderFilterOpen] = useState<boolean>(false);
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -56,10 +57,31 @@ const SideBar = ({ isSideBarOpen }: SideBarProps) => {
 	};
 	return (
 		<div
-			className={`absolute min-h-screen  overflow-y-auto z-10 bg-gray-800 transition-transform transform ease-in-out duration-300 md:flex flex-col w-64 ${isSideBarOpen ? '-translate-x-full ' : 'hidden '}`}
+			className={`absolute z-20 min-h-screen overflow-y-auto bg-gray-800 transition-transform transform ease-in-out duration-300 md:flex flex-col w-64 ${isSideBarOpen ? '-translate-x-full' : 'hidden'}`}
 		>
-			<div className="flex items-center justify-center h-16 bg-gray-900">
+			<div className="flex items-center justify-between h-16 px-6 bg-gray-900">
 				<span className="text-white font-bold uppercase">Filters</span>
+
+				<button
+					className="p-1 rounded-lg focus:outline-none focus:ring"
+					onClick={toggleSideBar}
+				>
+					<svg
+						className="w-6 h-6"
+						aria-hidden="true"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M6 18L18 6M6 6l12 12"
+						/>
+					</svg>
+				</button>
 			</div>
 			<div className="flex flex-col flex-1 overflow-y-auto">
 				<nav className="flex-1 px-2 py-4 bg-gray-800">

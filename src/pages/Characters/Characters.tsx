@@ -1,9 +1,10 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { getCharacters } from 'rickmortyapi';
 
 import Modal from '@/components/Modal/Modal';
+import Pagination from '@/components/Pagination/Pagination';
 
 import { Character } from '@/shared/types';
 
@@ -11,7 +12,7 @@ import CharacterCard from './CharacterCard/CharacterCard';
 import CharactersList from './CharactersList/CharactersList';
 
 type Query = {
-	currentPage: number;
+	page: number;
 	gender?: string;
 	status?: string;
 	name?: string;
@@ -30,7 +31,7 @@ const Characters = () => {
 
 	const getQueryFn = useCallback(() => {
 		const query: Query = {
-			currentPage,
+			page: currentPage,
 		};
 
 		if (searchedCharacter) {
@@ -46,7 +47,7 @@ const Characters = () => {
 		return getCharacters(query);
 	}, [searchedCharacter, filterGender, filterStatus, currentPage]);
 
-	const { data, isError } = useQuery({
+	const { data } = useQuery({
 		queryKey: [
 			'characters',
 			searchedCharacter,
@@ -74,13 +75,19 @@ const Characters = () => {
 	};
 
 	return (
-		<div className="w-full max-w-[1400px] mx-auto md:items-center ">
+		<div className="w-full pt-16 max-w-[1400px] mx-auto items-center ">
 			<div className="bg-white w-full">
 				{data?.data?.results ? (
-					<CharactersList
-						characters={data?.data?.results}
-						onCharacterItemClick={onCharacterItemClick}
-					/>
+					<>
+						<CharactersList
+							characters={data?.data?.results}
+							onCharacterItemClick={onCharacterItemClick}
+						/>
+						<Pagination
+							currentPage={currentPage}
+							setCurrentPage={setCurrentPage}
+						/>
+					</>
 				) : null}
 				{showModal && characterInfo ? (
 					<Modal onClose={onCloseModal}>

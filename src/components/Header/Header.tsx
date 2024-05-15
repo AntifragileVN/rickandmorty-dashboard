@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 type HeaderProps = {
@@ -26,7 +26,7 @@ const Header = ({ toggleSideBar }: HeaderProps) => {
 	}, [character, setSearchParams]);
 
 	return (
-		<div className="flex justify-start  py-2 bg-white border-b border-gray-200">
+		<div className="flex h-16 fixed justify-start z-10 w-full py-2 bg-white border-b border-gray-200">
 			<div className="flex max-w-[1400px] mx-auto w-full justify-start items-center  px-4">
 				<button
 					onClick={toggleSideBar}

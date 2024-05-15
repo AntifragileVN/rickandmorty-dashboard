@@ -11,7 +11,7 @@ const CharactersList = ({ characters, onCharacterItemClick }: CharactersListProp
 	return (
 		<>
 			{characters ? (
-				<ul className="flex flex-wrap w-full gap-4 items-start justify-between p-4 sm:justify-center">
+				<ul className="flex flex-wrap w-full gap-4 justify-center p-4 sm:justify-center">
 					{characters.map((character) => (
 						<CharacterItem
 							key={character.id}
