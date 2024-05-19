@@ -34,7 +34,7 @@ const Characters = () => {
 	const [currentPage, setCurrentPage] = useState<number>(
 		parseInt(searchParams.get('page') || '1', 10),
 	);
-	const [pagesCount, setPagesCount] = useState<number>(1);
+	const [pagesQuantity, setPagesQuantity] = useState<number>(0);
 
 	const getQueryFn = useCallback(() => {
 		const query: Query = {
@@ -73,10 +73,13 @@ const Characters = () => {
 
 	useEffect(() => {
 		if (data?.data?.info?.pages) {
-			setPagesCount(data?.data?.info?.pages);
+			setPagesQuantity(data?.data?.info?.pages);
 		}
-		console.log(pagesCount);
-	}, [data, pagesCount]);
+	}, [data, pagesQuantity]);
+
+	useEffect(() => {
+		setCurrentPage(1);
+	}, [searchedCharacter]);
 
 	useEffect(() => {
 		if (charactersData && sortMethod) {
@@ -106,6 +109,7 @@ const Characters = () => {
 						<Pagination
 							currentPage={currentPage}
 							setCurrentPage={setCurrentPage}
+							pageQuantity={pagesQuantity}
 						/>
 					</>
 				) : null}

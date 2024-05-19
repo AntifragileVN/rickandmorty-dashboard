@@ -1,13 +1,17 @@
-import { useEffect, useState } from 'react';
+/// <reference types="vite-plugin-svgr/client" />
+import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
+import ArrowIcon from '@/assets/arrow.svg?react';
+
 type PaginationProps = {
+	pageQuantity: number;
 	currentPage: number;
 	setCurrentPage: (page: number) => void;
 };
-const Pagination = ({ currentPage, setCurrentPage }: PaginationProps) => {
-	const [num, setNum] = useState(1);
+const Pagination = ({ pageQuantity, currentPage, setCurrentPage }: PaginationProps) => {
 	const [, setSearchParams] = useSearchParams();
+	const limit = 10;
 
 	useEffect(() => {
 		if (currentPage === 1) {
@@ -23,56 +27,42 @@ const Pagination = ({ currentPage, setCurrentPage }: PaginationProps) => {
 		});
 	}, [currentPage, setSearchParams]);
 
-	const pages = [
-		{ page: num },
-		{ page: num + 1 },
-		{ page: num + 2 },
-		{ page: num + 3 },
-	];
+	const pages = Array(limit)
+		.fill(0)
+		.map((_, index) => index + currentPage);
 
 	function next() {
-		setNum(num + 1);
+		setCurrentPage(currentPage + 1);
 	}
 	function back() {
-		num > 1 && setNum(num - 1);
+		setCurrentPage(currentPage - 1);
 	}
 	return (
 		<div className="flex justify-center w-full gap-x-4 bg-white rounded-lg pb-4 ">
 			<button
 				onClick={back}
-				className="h-12 border-2 border-r-0 border-indigo-600
-               px-4 rounded-l-lg hover:bg-indigo-600 hover:text-white"
+				className="h-12 border-2 border-r-0 border-indigo-600 hover:text-white
+               px-4 rounded-l-lg hover:bg-indigo-600  disabled:bg-gray-200"
+				disabled={currentPage === 1}
 			>
-				<svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
-					<path
-						d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-						clip-rule="evenodd"
-						fill-rule="evenodd"
-					></path>
-				</svg>
+				<ArrowIcon className="transform -rotate-90 stroke-black" />
 			</button>
-			{pages.map((pg, i) => (
+			{pages.map((item, i) => (
 				<button
 					key={i}
-					onClick={() => setCurrentPage(pg.page)}
-					className={`h-12 border-2 border-r-0 border-indigo-600
-               w-12 ${currentPage === pg.page && 'bg-indigo-600 text-white'}`}
+					onClick={() => setCurrentPage(item)}
+					className={`h-12 border-2 border-r-0 border-indigo-600  hover:text-white hover:bg-indigo-600 w-12 ${currentPage === item && 'bg-indigo-600 text-white'}`}
 				>
-					{pg.page}
+					{item}
 				</button>
 			))}
 			<button
 				onClick={next}
-				className="h-12 border-2  border-indigo-600
-               px-4 rounded-r-lg hover:bg-indigo-600 hover:text-white"
+				className="h-12 border-2  border-indigo-600 hover:text-white
+               px-4 rounded-r-lg hover:bg-indigo-600  disabled:bg-gray-200 "
+				disabled={currentPage === pageQuantity}
 			>
-				<svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
-					<path
-						d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-						clip-rule="evenodd"
-						fill-rule="evenodd"
-					></path>
-				</svg>
+				<ArrowIcon className="transform rotate-90" />
 			</button>
 		</div>
 	);
