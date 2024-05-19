@@ -26,14 +26,23 @@ const Characters = () => {
 	const [characterInfo, setCharacterInfo] = useState<Character | null>(null);
 	const [searchParams] = useSearchParams();
 
+	const searchedPage = searchParams.get('page') ?? '1';
 	const searchedCharacter = searchParams.get('character') ?? '';
 	const filterStatus = searchParams.get('status') ?? '';
 	const filterGender = searchParams.get('gender') ?? '';
 	const sortMethod: SortMethod = (searchParams.get('sortBy') as SortMethod) ?? '';
 
-	const [currentPage, setCurrentPage] = useState<number>(
-		parseInt(searchParams.get('page') || '1', 10),
-	);
+	const [currentPage, setCurrentPage] = useState<number>(parseInt(searchedPage ?? '1'));
+
+	useEffect(() => {
+		const page = searchParams.get('page') ?? '1';
+		setCurrentPage(parseInt(page, 10));
+	}, [searchParams]);
+
+	useEffect(() => {
+		console.log('curPage', currentPage);
+	}, [currentPage]);
+
 	const [pagesQuantity, setPagesQuantity] = useState<number>(0);
 
 	const getQueryFn = useCallback(() => {
@@ -76,10 +85,6 @@ const Characters = () => {
 			setPagesQuantity(data?.data?.info?.pages);
 		}
 	}, [data, pagesQuantity]);
-
-	useEffect(() => {
-		setCurrentPage(1);
-	}, [searchedCharacter]);
 
 	useEffect(() => {
 		if (charactersData && sortMethod) {

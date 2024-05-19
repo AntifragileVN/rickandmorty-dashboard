@@ -24,6 +24,7 @@ const Header = ({ toggleSideBar }: HeaderProps) => {
 		}
 		setSearchParams((searchParams) => {
 			searchParams.set('character', character);
+			searchParams.set('page', '1');
 			return searchParams;
 		});
 	}, [character, setSearchParams]);
@@ -42,7 +43,9 @@ const Header = ({ toggleSideBar }: HeaderProps) => {
 					type="text"
 					placeholder="Search"
 					value={character}
-					onChange={(e) => setCharacter(e.target.value.trim())}
+					onChange={(e) => {
+						setCharacter(e.target.value.trim());
+					}}
 				/>
 			</div>
 		</div>
