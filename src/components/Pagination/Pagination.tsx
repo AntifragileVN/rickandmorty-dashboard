@@ -14,8 +14,13 @@ const Pagination = ({ pageQuantity, currentPage, setCurrentPage }: PaginationPro
 	const [, setSearchParams] = useSearchParams();
 	const pages = Array(limit)
 		.fill(0)
-		.map((_, index) => index + currentPage);
+		.map((_, index) => {
+			if (currentPage >= limit / 2) {
+				return currentPage + 1 - limit / 2 + index;
+			}
 
+			return index + 1;
+		});
 	const setPageParam = (value: number) => {
 		setSearchParams((searchParams) => {
 			searchParams.set('page', value.toString());
