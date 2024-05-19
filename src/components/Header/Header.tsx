@@ -1,5 +1,8 @@
+/// <reference types="vite-plugin-svgr/client" />
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+
+import BurgerIcon from '@/assets/burger.svg?react';
 
 type HeaderProps = {
 	toggleSideBar: () => void;
@@ -32,20 +35,7 @@ const Header = ({ toggleSideBar }: HeaderProps) => {
 					onClick={toggleSideBar}
 					className="text-gray-500 focus:outline-none focus:text-gray-700"
 				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						className="h-6 w-6"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M4 6h16M4 12h16M4 18h16"
-						/>
-					</svg>
+					<BurgerIcon className="h-6 w-6" />
 				</button>
 				<input
 					className="mx-4 w-full max-w-[500px] border rounded-md px-4 py-2"

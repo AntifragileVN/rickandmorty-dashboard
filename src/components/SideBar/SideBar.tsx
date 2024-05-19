@@ -1,7 +1,13 @@
+/// <reference types="vite-plugin-svgr/client" />
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import Radio from '@/components/Radio/Radio';
+
+import ArrowIcon from '@/assets/arrow.svg?react';
+import BurgerIcon from '@/assets/burger.svg?react';
+import CrossIcon from '@/assets/cross.svg?react';
+import LightningIcon from '@/assets/lightning.svg?react';
 
 type SideBarProps = {
 	isSideBarOpen: boolean;
@@ -63,40 +69,13 @@ const SideBar = ({ isSideBarOpen, toggleSideBar }: SideBarProps) => {
 					className="p-1 rounded-lg focus:outline-none focus:ring"
 					onClick={toggleSideBar}
 				>
-					<svg
-						className="w-6 h-6"
-						aria-hidden="true"
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M6 18L18 6M6 6l12 12"
-						/>
-					</svg>
+					<CrossIcon className="h-6 w-6" />
 				</button>
 			</div>
 			<div className="flex flex-col flex-1 overflow-y-auto">
 				<nav className="flex-1 px-2 py-4 bg-gray-800">
 					<a className="flex items-center duration-300 px-4 py-2 text-gray-100 hover:bg-gray-700">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							className="h-6 w-6 mr-2"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								strokeWidth="2"
-								d="M4 6h16M4 12h16M4 18h16"
-							/>
-						</svg>
+						<BurgerIcon className="h-6 w-6 mr-2" />
 						<div
 							className="flex justify-between w-full items-center"
 							onClick={() => setIsStatusItemOpen((prev) => !prev)}
@@ -106,23 +85,7 @@ const SideBar = ({ isSideBarOpen, toggleSideBar }: SideBarProps) => {
 								className={`text-sm ${isStatusItemOpen ? 'rotate-180' : ''}`}
 								id="arrow"
 							>
-								<svg
-									id="icon1"
-									className="transform rotate-180"
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<path
-										d="M18 15L12 9L6 15"
-										stroke="currentColor"
-										stroke-width="1.5"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-									/>
-								</svg>
+								<ArrowIcon className="transform rotate-180" />
 							</span>
 						</div>
 					</a>
@@ -161,43 +124,14 @@ const SideBar = ({ isSideBarOpen, toggleSideBar }: SideBarProps) => {
 						className="flex items-center duration-300 px-4 py-2 text-gray-100 hover:bg-gray-700"
 						onClick={() => setIsSortFieldOpen((prev) => !prev)}
 					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							className="h-6 w-6 mr-2"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M6 18L18 6M6 6l12 12"
-							/>
-						</svg>
+						<CrossIcon className="h-6 w-6 mr-2" />
 						<div className="flex justify-between w-full items-center">
 							Sort By
 							<span
 								className={`text-sm ${isSortFieldOpen ? 'rotate-180' : ''}`}
 								id="arrow"
 							>
-								<svg
-									id="icon1"
-									className="transform rotate-180"
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<path
-										d="M18 15L12 9L6 15"
-										stroke="currentColor"
-										stroke-width="1.5"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-									/>
-								</svg>
+								<ArrowIcon className="transform rotate-180" />
 							</span>
 						</div>
 					</a>
@@ -239,43 +173,14 @@ const SideBar = ({ isSideBarOpen, toggleSideBar }: SideBarProps) => {
 						className="flex items-center duration-300 px-4 py-2 text-gray-100 hover:bg-gray-700"
 						onClick={() => setIsGenderFilterOpen((prev) => !prev)}
 					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							className="h-6 w-6 mr-2"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M6 18L18 6M6 6l12 12"
-							/>
-						</svg>
+						<CrossIcon className="h-6 w-6 mr-2" />
 						<div className="flex justify-between w-full items-center">
 							Gender
 							<span
 								className={`text-sm ${isGenderFilterOpen ? 'rotate-180' : ''}`}
 								id="arrow"
 							>
-								<svg
-									id="icon1"
-									className="transform rotate-180"
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<path
-										d="M18 15L12 9L6 15"
-										stroke="currentColor"
-										stroke-width="1.5"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-									/>
-								</svg>
+								<ArrowIcon className="transform rotate-180" />
 							</span>
 						</div>
 					</a>
@@ -324,20 +229,7 @@ const SideBar = ({ isSideBarOpen, toggleSideBar }: SideBarProps) => {
 						className="flex items-center px-4 py-2 mt-2 text-gray-100 hover:bg-gray-700"
 						onClick={clearAllFilters}
 					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							className="h-6 w-6 mr-2"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M13 10V3L4 14h7v7l9-11h-7z"
-							/>
-						</svg>
+						<LightningIcon className="h-6 w-6 mr-2" />
 						Clear All
 					</a>
 				</nav>

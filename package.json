@@ -19,7 +19,8 @@
 		"react-dom": "^18.2.0",
 		"react-router-dom": "^6.23.1",
 		"react-toastify": "^10.0.5",
-		"rickmortyapi": "^2.3.0"
+		"rickmortyapi": "^2.3.0",
+		"vite-plugin-svgr": "^4.2.0"
 	},
 	"devDependencies": {
 		"@tanstack/eslint-plugin-query": "^5.35.6",
