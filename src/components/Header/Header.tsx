@@ -20,14 +20,17 @@ const Header = ({ toggleSideBar }: HeaderProps) => {
 				searchParams.delete('character');
 				return searchParams;
 			});
-			return;
 		}
+	}, [character, setSearchParams]);
+
+	const onSearchCharacterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setCharacter(e.target.value.trim());
 		setSearchParams((searchParams) => {
 			searchParams.set('character', character);
 			searchParams.set('page', '1');
 			return searchParams;
 		});
-	}, [character, setSearchParams]);
+	};
 
 	return (
 		<div className="flex h-16 fixed justify-start z-10 w-full py-2 bg-white border-b border-gray-200">
@@ -43,9 +46,7 @@ const Header = ({ toggleSideBar }: HeaderProps) => {
 					type="text"
 					placeholder="Search"
 					value={character}
-					onChange={(e) => {
-						setCharacter(e.target.value.trim());
-					}}
+					onChange={onSearchCharacterChange}
 				/>
 			</div>
 		</div>

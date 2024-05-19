@@ -36,14 +36,16 @@ const Characters = () => {
 
 	useEffect(() => {
 		const page = searchParams.get('page') ?? '1';
+		console.log(page);
 		setCurrentPage(parseInt(page, 10));
 	}, [searchParams]);
 
-	useEffect(() => {
-		console.log('curPage', currentPage);
-	}, [currentPage]);
+	// useEffect(() => {
+	// 	console.log('curPage', currentPage);
+	// }, [currentPage]);
 
 	const [pagesQuantity, setPagesQuantity] = useState<number>(0);
+	console.log(pagesQuantity);
 
 	const getQueryFn = useCallback(() => {
 		const query: Query = {
@@ -63,7 +65,7 @@ const Characters = () => {
 		return getCharacters(query);
 	}, [searchedCharacter, filterGender, filterStatus, currentPage]);
 
-	const { data } = useQuery({
+	const { data, isError } = useQuery({
 		queryKey: [
 			'characters',
 			searchedCharacter,
@@ -104,6 +106,16 @@ const Characters = () => {
 
 	return (
 		<div className="w-full pt-16 max-w-[1400px] mx-auto items-center ">
+			{data?.status === 404 ? (
+				<div className=" mt-4 text-center text-lg font-medium">
+					There is no such character
+				</div>
+			) : null}
+			{data?.status === 404 ? (
+				<div className=" mt-4 text-center text-lg font-medium">
+					Something went wrong
+				</div>
+			) : null}
 			<div className="bg-white w-full">
 				{data?.data?.results ? (
 					<>
@@ -111,11 +123,14 @@ const Characters = () => {
 							characters={data?.data?.results}
 							onCharacterItemClick={onCharacterItemClick}
 						/>
-						<Pagination
-							currentPage={currentPage}
-							setCurrentPage={setCurrentPage}
-							pageQuantity={pagesQuantity}
-						/>
+
+						{pagesQuantity !== 0 ? (
+							<Pagination
+								currentPage={currentPage}
+								setCurrentPage={setCurrentPage}
+								pageQuantity={pagesQuantity}
+							/>
+						) : null}
 					</>
 				) : null}
 				{showModal && characterInfo ? (

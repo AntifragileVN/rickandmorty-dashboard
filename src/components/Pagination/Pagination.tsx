@@ -10,13 +10,13 @@ type PaginationProps = {
 };
 
 const Pagination = ({ pageQuantity, currentPage, setCurrentPage }: PaginationProps) => {
-	const limit = 10;
+	const pageLimit = 10;
 	const [, setSearchParams] = useSearchParams();
-	const pages = Array(limit)
+	const pages = Array(pageQuantity >= pageLimit ? pageLimit : pageQuantity)
 		.fill(0)
 		.map((_, index) => {
-			if (currentPage >= limit / 2) {
-				return currentPage + 1 - limit / 2 + index;
+			if (currentPage >= pageLimit / 2) {
+				return currentPage - pageLimit / 2 + index;
 			}
 
 			return index + 1;
@@ -40,6 +40,7 @@ const Pagination = ({ pageQuantity, currentPage, setCurrentPage }: PaginationPro
 
 	const onPaginationClick = (value: number) => {
 		setCurrentPage(value);
+		console.log(value);
 		setPageParam(value);
 	};
 
