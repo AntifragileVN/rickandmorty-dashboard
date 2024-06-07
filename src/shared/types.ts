@@ -19,4 +19,4 @@ export type Character = {
 	created: string;
 };
 
-export type SortMethod = 'name' | 'gender' | 'location';
+export type SortMethod = 'name' | 'gender' | 'location' | 'status';

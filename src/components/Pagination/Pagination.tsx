@@ -6,10 +6,9 @@ import ArrowIcon from '@/assets/arrow.svg?react';
 type PaginationProps = {
 	pageQuantity: number;
 	currentPage: number;
-	setCurrentPage: (page: number) => void;
 };
 
-const Pagination = ({ pageQuantity, currentPage, setCurrentPage }: PaginationProps) => {
+const Pagination = ({ pageQuantity, currentPage }: PaginationProps) => {
 	const pageLimit = 10;
 	const [, setSearchParams] = useSearchParams();
 	const pages = Array(pageQuantity >= pageLimit ? pageLimit : pageQuantity)
@@ -29,18 +28,14 @@ const Pagination = ({ pageQuantity, currentPage, setCurrentPage }: PaginationPro
 	};
 
 	function next() {
-		setCurrentPage(currentPage + 1);
 		setPageParam(currentPage + 1);
 	}
 
 	function back() {
-		setCurrentPage(currentPage - 1);
 		setPageParam(currentPage - 1);
 	}
 
 	const onPaginationClick = (value: number) => {
-		setCurrentPage(value);
-		console.log(value);
 		setPageParam(value);
 	};
 

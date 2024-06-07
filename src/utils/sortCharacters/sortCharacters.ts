@@ -8,6 +8,8 @@ export function sortCharacters(
 	characters: Character[],
 ): Character[] {
 	switch (sortMethod) {
+		case 'status':
+			return sort.sortCharactersByStatus(characters);
 		case 'name':
 			return sort.sortCharactersByName(characters);
 		case 'gender':

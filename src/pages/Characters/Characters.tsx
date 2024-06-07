@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { getCharacters } from 'rickmortyapi';
 
@@ -22,7 +22,6 @@ type Query = {
 
 const Characters = () => {
 	const [showModal, setShowModal] = useState<boolean>(false);
-	const [charactersData, setCharactersData] = useState<Character[]>([]);
 	const [characterInfo, setCharacterInfo] = useState<Character | null>(null);
 	const [searchParams] = useSearchParams();
 
@@ -32,24 +31,9 @@ const Characters = () => {
 	const filterGender = searchParams.get('gender') ?? '';
 	const sortMethod: SortMethod = (searchParams.get('sortBy') as SortMethod) ?? '';
 
-	const [currentPage, setCurrentPage] = useState<number>(parseInt(searchedPage ?? '1'));
-
-	useEffect(() => {
-		const page = searchParams.get('page') ?? '1';
-		console.log(page);
-		setCurrentPage(parseInt(page, 10));
-	}, [searchParams]);
-
-	// useEffect(() => {
-	// 	console.log('curPage', currentPage);
-	// }, [currentPage]);
-
-	const [pagesQuantity, setPagesQuantity] = useState<number>(0);
-	console.log(pagesQuantity);
-
 	const getQueryFn = useCallback(() => {
 		const query: Query = {
-			page: currentPage,
+			page: parseInt(searchedPage),
 		};
 
 		if (searchedCharacter) {
@@ -63,37 +47,28 @@ const Characters = () => {
 		}
 
 		return getCharacters(query);
-	}, [searchedCharacter, filterGender, filterStatus, currentPage]);
+	}, [searchedCharacter, filterGender, filterStatus, searchedPage]);
 
-	const { data, isError } = useQuery({
+	const { data } = useQuery({
 		queryKey: [
 			'characters',
 			searchedCharacter,
 			filterGender,
 			filterStatus,
-			currentPage,
+			searchedPage,
 		],
 		queryFn: getQueryFn,
+		select: ({ data }) => {
+			if (sortMethod && data.results) {
+				const sortedCharacters = sortCharacters(sortMethod, data.results);
+				return {
+					...data,
+					results: sortedCharacters,
+				};
+			}
+			return data;
+		},
 	});
-
-	useEffect(() => {
-		if (data?.data?.results) {
-			setCharactersData(data.data.results);
-		}
-	}, [data]);
-
-	useEffect(() => {
-		if (data?.data?.info?.pages) {
-			setPagesQuantity(data?.data?.info?.pages);
-		}
-	}, [data, pagesQuantity]);
-
-	useEffect(() => {
-		if (charactersData && sortMethod) {
-			const sortedCharacters = sortCharacters(sortMethod, charactersData);
-			setCharactersData(sortedCharacters);
-		}
-	}, [charactersData, sortMethod]);
 
 	const onCloseModal = () => {
 		setShowModal(false);
@@ -106,29 +81,28 @@ const Characters = () => {
 
 	return (
 		<div className="w-full pt-16 max-w-[1400px] mx-auto items-center ">
-			{data?.status === 404 ? (
+			{/* {data?.status === 404 ? (
 				<div className=" mt-4 text-center text-lg font-medium">
 					There is no such character
 				</div>
 			) : null}
-			{data?.status === 404 ? (
+			{data?.status === 500 ? (
 				<div className=" mt-4 text-center text-lg font-medium">
 					Something went wrong
 				</div>
-			) : null}
+			) : null} */}
 			<div className="bg-white w-full">
-				{data?.data?.results ? (
+				{data?.results ? (
 					<>
 						<CharactersList
-							characters={data?.data?.results}
+							characters={data.results}
 							onCharacterItemClick={onCharacterItemClick}
 						/>
 
-						{pagesQuantity !== 0 ? (
+						{data?.info?.pages && data?.info?.pages > 0 ? (
 							<Pagination
-								currentPage={currentPage}
-								setCurrentPage={setCurrentPage}
-								pageQuantity={pagesQuantity}
+								currentPage={parseInt(searchedPage)}
+								pageQuantity={data?.info?.pages}
 							/>
 						) : null}
 					</>
