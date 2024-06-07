@@ -1,24 +1,15 @@
-import { useQuery } from '@tanstack/react-query';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { getCharacters } from 'rickmortyapi';
 
 import Modal from '@/components/Modal/Modal';
 import Pagination from '@/components/Pagination/Pagination';
 
-import { Character, SortMethod } from '@/shared/types';
+import { useGetCharacters } from '@/hooks/useGetCharacters';
 
-import { sortCharacters } from '@/utils/sortCharacters/sortCharacters';
+import { Character, SortMethod } from '@/shared/types';
 
 import CharacterCard from './CharacterCard/CharacterCard';
 import CharactersList from './CharactersList/CharactersList';
-
-type Query = {
-	page: number;
-	gender?: string;
-	status?: string;
-	name?: string;
-};
 
 const Characters = () => {
 	const [showModal, setShowModal] = useState<boolean>(false);
@@ -31,43 +22,12 @@ const Characters = () => {
 	const filterGender = searchParams.get('gender') ?? '';
 	const sortMethod: SortMethod = (searchParams.get('sortBy') as SortMethod) ?? '';
 
-	const getQueryFn = useCallback(() => {
-		const query: Query = {
-			page: parseInt(searchedPage),
-		};
-
-		if (searchedCharacter) {
-			query.name = searchedCharacter;
-		}
-		if (filterGender) {
-			query.gender = filterGender;
-		}
-		if (filterStatus) {
-			query.status = filterStatus;
-		}
-
-		return getCharacters(query);
-	}, [searchedCharacter, filterGender, filterStatus, searchedPage]);
-
-	const { data } = useQuery({
-		queryKey: [
-			'characters',
-			searchedCharacter,
-			filterGender,
-			filterStatus,
-			searchedPage,
-		],
-		queryFn: getQueryFn,
-		select: ({ data }) => {
-			if (sortMethod && data.results) {
-				const sortedCharacters = sortCharacters(sortMethod, data.results);
-				return {
-					...data,
-					results: sortedCharacters,
-				};
-			}
-			return data;
-		},
+	const { data, isLoading } = useGetCharacters({
+		page: parseInt(searchedPage),
+		gender: filterGender,
+		status: filterStatus,
+		name: searchedCharacter,
+		sortBy: sortMethod,
 	});
 
 	const onCloseModal = () => {
@@ -91,6 +51,9 @@ const Characters = () => {
 					Something went wrong
 				</div>
 			) : null} */}
+			{isLoading ? (
+				<div className=" mt-4 text-center text-lg font-medium">Loading ...</div>
+			) : null}
 			<div className="bg-white w-full">
 				{data?.results ? (
 					<>
@@ -99,7 +62,7 @@ const Characters = () => {
 							onCharacterItemClick={onCharacterItemClick}
 						/>
 
-						{data?.info?.pages && data?.info?.pages > 0 ? (
+						{data?.info?.pages && data?.info?.pages > 1 ? (
 							<Pagination
 								currentPage={parseInt(searchedPage)}
 								pageQuantity={data?.info?.pages}
