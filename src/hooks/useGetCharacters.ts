@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { getCharacters } from 'rickmortyapi';
+import { Character, Info, getCharacters } from 'rickmortyapi';
 
-import { GetCharactersParams } from '@/shared/types';
+import { GetCharactersParams, SortMethod } from '@/shared/types';
 
 import { sortCharacters } from '@/utils/sortCharacters/sortCharacters';
 
@@ -25,6 +25,20 @@ const getQueryFn = ({ name, gender, status, page }: GetCharactersParams) => {
 	return getCharacters(query);
 };
 
+const selectSortedCharacters = (
+	sortBy: SortMethod | undefined,
+	data: Info<Character[]>,
+) => {
+	if (sortBy && data.results) {
+		const sortedCharacters = sortCharacters(sortBy, data.results);
+		return {
+			...data,
+			results: sortedCharacters,
+		};
+	}
+	return data;
+};
+
 export const useGetCharacters = (params: GetCharactersParams) => {
 	return useQuery({
 		queryKey: [QUERY_KEY, params],
@@ -35,15 +49,6 @@ export const useGetCharacters = (params: GetCharactersParams) => {
 				}
 				return response;
 			}),
-		select: ({ data }) => {
-			if (params.sortBy && data.results) {
-				const sortedCharacters = sortCharacters(params.sortBy, data.results);
-				return {
-					...data,
-					results: sortedCharacters,
-				};
-			}
-			return data;
-		},
+		select: ({ data }) => selectSortedCharacters(params.sortBy, data),
 	});
 };

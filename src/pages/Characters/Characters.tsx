@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { Character } from 'rickmortyapi';
 
 import Modal from '@/components/Modal/Modal';
 import Pagination from '@/components/Pagination/Pagination';
 
 import { useGetCharacters } from '@/hooks/useGetCharacters';
 
-import { Character, SortMethod } from '@/shared/types';
+import { SortMethod } from '@/shared/types';
 
 import CharacterCard from './CharacterCard/CharacterCard';
 import CharactersList from './CharactersList/CharactersList';

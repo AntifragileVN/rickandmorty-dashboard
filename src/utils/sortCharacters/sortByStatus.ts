@@ -1,4 +1,4 @@
-import { Character } from '@/shared/types';
+import { Character } from 'rickmortyapi';
 
 export function sortCharactersByStatus(characters: Character[]) {
 	return characters.sort((a, b) => {

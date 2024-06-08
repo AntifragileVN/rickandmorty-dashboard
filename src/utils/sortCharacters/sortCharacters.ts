@@ -1,4 +1,5 @@
-import { Character } from '@/shared/types';
+import { Character } from 'rickmortyapi';
+
 import { SortMethod } from '@/shared/types';
 
 import * as sort from './index';
