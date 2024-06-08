@@ -1,5 +1,4 @@
 /// <reference types="vite-plugin-svgr/client" />
-import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import BurgerIcon from '@/assets/burger.svg?react';
@@ -10,24 +9,18 @@ type HeaderProps = {
 
 const Header = ({ toggleSideBar }: HeaderProps) => {
 	const [searchParams, setSearchParams] = useSearchParams();
-	const [character, setCharacter] = useState<string>(
-		searchParams.get('character') || '',
-	);
-
-	useEffect(() => {
-		if (character === '') {
-			setSearchParams((searchParams) => {
-				searchParams.delete('character');
-				return searchParams;
-			});
-		}
-	}, [character, setSearchParams]);
+	const searchedCharacter = searchParams.get('character') ?? '';
 
 	const onSearchCharacterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setCharacter(e.target.value.trim());
+		const character = e.target.value.trim();
 		setSearchParams((searchParams) => {
-			searchParams.set('character', character);
 			searchParams.set('page', '1');
+
+			if (character.length === 0) {
+				searchParams.delete('character');
+			} else {
+				searchParams.set('character', character);
+			}
 			return searchParams;
 		});
 	};
@@ -45,7 +38,7 @@ const Header = ({ toggleSideBar }: HeaderProps) => {
 					className="mx-4 w-full max-w-[500px] border rounded-md px-4 py-2"
 					type="text"
 					placeholder="Search"
-					value={character}
+					value={searchedCharacter}
 					onChange={onSearchCharacterChange}
 				/>
 			</div>
