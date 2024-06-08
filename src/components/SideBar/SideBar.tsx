@@ -1,8 +1,10 @@
 /// <reference types="vite-plugin-svgr/client" />
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import Radio from '@/components/Radio/Radio';
+
+import { SortMethod } from '@/shared/types';
 
 import ArrowIcon from '@/assets/arrow.svg?react';
 import BurgerIcon from '@/assets/burger.svg?react';
@@ -18,32 +20,20 @@ const SideBar = ({ isSideBarOpen, toggleSideBar }: SideBarProps) => {
 	const [isStatusItemOpen, setIsStatusItemOpen] = useState<boolean>(false);
 	const [isGenderFilterOpen, setIsGenderFilterOpen] = useState<boolean>(false);
 	const [isSortFieldOpen, setIsSortFieldOpen] = useState<boolean>(false);
-	const [searchParams, setSearchParams] = useSearchParams();
-	const [currentStatus, setCurrentStatus] = useState<string>(
-		searchParams.get('status') || '',
-	);
-	const [gender, setGender] = useState<string>(searchParams.get('gender') || '');
-	const [sortMethod, setSortMethod] = useState<string>(searchParams.get('sort') || '');
 
-	useEffect(() => {
+	const [searchParams, setSearchParams] = useSearchParams();
+	const filterStatus = searchParams.get('status') ?? '';
+	const filterGender = searchParams.get('gender') ?? '';
+	const sortMethod: SortMethod = (searchParams.get('sortBy') as SortMethod) ?? '';
+
+	const setUrlParams = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const name = event.target.name;
+		const value = event.target.value;
+
 		setSearchParams((searchParams) => {
-			gender && searchParams.set('gender', gender);
-			currentStatus && searchParams.set('status', currentStatus);
-			sortMethod && searchParams.set('sortBy', sortMethod);
+			searchParams.set(name, value);
 			return searchParams;
 		});
-	}, [gender, currentStatus, sortMethod, setSearchParams]);
-
-	const onStatusChange = (value: string): void => {
-		setCurrentStatus(value);
-	};
-
-	const onGenderChange = (value: string): void => {
-		setGender(value);
-	};
-
-	const onSortMethodChange = (value: string): void => {
-		setSortMethod(value);
 	};
 
 	const clearAllFilters = () => {
@@ -53,10 +43,6 @@ const SideBar = ({ isSideBarOpen, toggleSideBar }: SideBarProps) => {
 			searchParams.delete('sortBy');
 			return searchParams;
 		});
-
-		setCurrentStatus('');
-		setGender('');
-		setSortMethod('');
 	};
 	return (
 		<div
@@ -96,9 +82,9 @@ const SideBar = ({ isSideBarOpen, toggleSideBar }: SideBarProps) => {
 							<Radio
 								name="status"
 								value="alive"
-								currentValue={currentStatus}
+								currentValue={filterStatus}
 								title="Alive"
-								onChange={onStatusChange}
+								onChange={setUrlParams}
 							/>
 						</li>
 						<li className="mb-2 inline-block">
@@ -106,8 +92,8 @@ const SideBar = ({ isSideBarOpen, toggleSideBar }: SideBarProps) => {
 								name="status"
 								value="dead"
 								title="Dead"
-								currentValue={currentStatus}
-								onChange={onStatusChange}
+								currentValue={filterStatus}
+								onChange={setUrlParams}
 							/>
 						</li>
 						<li className="mb-2 inline-block">
@@ -115,8 +101,8 @@ const SideBar = ({ isSideBarOpen, toggleSideBar }: SideBarProps) => {
 								name="status"
 								value="unknown"
 								title="Uknown"
-								currentValue={currentStatus}
-								onChange={onStatusChange}
+								currentValue={filterStatus}
+								onChange={setUrlParams}
 							/>
 						</li>
 					</ul>
@@ -140,32 +126,32 @@ const SideBar = ({ isSideBarOpen, toggleSideBar }: SideBarProps) => {
 					>
 						<li className="mb-2 inline-block">
 							<Radio
-								name="sort"
+								name="sortBy"
 								id="sortGender"
 								value="gender"
 								currentValue={sortMethod}
 								title="Gender"
-								onChange={onSortMethodChange}
+								onChange={setUrlParams}
 							/>
 						</li>
 						<li className="mb-2 inline-block">
 							<Radio
-								name="sort"
+								name="sortBy"
 								id="sortStatus"
 								value="status"
 								title="Status"
 								currentValue={sortMethod}
-								onChange={onSortMethodChange}
+								onChange={setUrlParams}
 							/>
 						</li>
 						<li className="mb-2 inline-block">
 							<Radio
-								name="sort"
+								name="sortBy"
 								id="sortLocation"
 								value="location"
 								title="Location"
 								currentValue={sortMethod}
-								onChange={onSortMethodChange}
+								onChange={setUrlParams}
 							/>
 						</li>
 					</ul>
@@ -191,9 +177,9 @@ const SideBar = ({ isSideBarOpen, toggleSideBar }: SideBarProps) => {
 							<Radio
 								name="gender"
 								value="female"
-								currentValue={gender}
+								currentValue={filterGender}
 								title="Female"
-								onChange={onGenderChange}
+								onChange={setUrlParams}
 							/>
 						</li>
 						<li className="mb-2 inline-block">
@@ -201,8 +187,8 @@ const SideBar = ({ isSideBarOpen, toggleSideBar }: SideBarProps) => {
 								name="gender"
 								value="male"
 								title="Male"
-								currentValue={gender}
-								onChange={onGenderChange}
+								currentValue={filterGender}
+								onChange={setUrlParams}
 							/>
 						</li>
 						<li className="mb-2 inline-block">
@@ -210,8 +196,8 @@ const SideBar = ({ isSideBarOpen, toggleSideBar }: SideBarProps) => {
 								name="gender"
 								value="genderless"
 								title="Genderless"
-								currentValue={gender}
-								onChange={onGenderChange}
+								currentValue={filterGender}
+								onChange={setUrlParams}
 							/>
 						</li>
 						<li className="mb-2 inline-block">
@@ -220,8 +206,8 @@ const SideBar = ({ isSideBarOpen, toggleSideBar }: SideBarProps) => {
 								id="genderUnknown"
 								value="unknown"
 								title="Unknown"
-								currentValue={gender}
-								onChange={onGenderChange}
+								currentValue={filterGender}
+								onChange={setUrlParams}
 							/>
 						</li>
 					</ul>

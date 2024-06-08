@@ -4,7 +4,7 @@ type RadioProps = {
 	title: string;
 	value: string;
 	currentValue: string;
-	onChange: (value: string) => void;
+	onChange: React.ChangeEventHandler<HTMLInputElement>;
 };
 
 const Radio = ({
@@ -25,7 +25,7 @@ const Radio = ({
 					name={name}
 					checked={currentValue === value}
 					className=" peer col-start-1 row-start-1 appearance-none shrink-0 w-4 h-4 border-2 border-blue-500 rounded-full focus:outline-none focus:ring-offset-0 focus:ring-2 focus:ring-blue-400 disabled:border-gray-400"
-					onChange={() => onChange(value)}
+					onChange={onChange}
 					value={value}
 					{...rest}
 				/>
