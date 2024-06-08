@@ -28,7 +28,13 @@ const getQueryFn = ({ name, gender, status, page }: GetCharactersParams) => {
 export const useGetCharacters = (params: GetCharactersParams) => {
 	return useQuery({
 		queryKey: [QUERY_KEY, params],
-		queryFn: () => getQueryFn(params),
+		queryFn: () =>
+			getQueryFn(params).then((response) => {
+				if (response.status === 404) {
+					throw new Error('There is no such character');
+				}
+				return response;
+			}),
 		select: ({ data }) => {
 			if (params.sortBy && data.results) {
 				const sortedCharacters = sortCharacters(params.sortBy, data.results);

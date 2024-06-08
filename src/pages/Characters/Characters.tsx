@@ -22,7 +22,7 @@ const Characters = () => {
 	const filterGender = searchParams.get('gender') ?? '';
 	const sortMethod: SortMethod = (searchParams.get('sortBy') as SortMethod) ?? '';
 
-	const { data, isLoading } = useGetCharacters({
+	const { data, isLoading, error } = useGetCharacters({
 		page: parseInt(searchedPage),
 		gender: filterGender,
 		status: filterStatus,
@@ -41,19 +41,16 @@ const Characters = () => {
 
 	return (
 		<div className="w-full pt-16 max-w-[1400px] mx-auto items-center ">
-			{/* {data?.status === 404 ? (
+			{error ? (
 				<div className=" mt-4 text-center text-lg font-medium">
 					There is no such character
 				</div>
 			) : null}
-			{data?.status === 500 ? (
-				<div className=" mt-4 text-center text-lg font-medium">
-					Something went wrong
-				</div>
-			) : null} */}
+
 			{isLoading ? (
 				<div className=" mt-4 text-center text-lg font-medium">Loading ...</div>
 			) : null}
+
 			<div className="bg-white w-full">
 				{data?.results ? (
 					<>
