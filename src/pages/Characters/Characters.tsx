@@ -19,6 +19,7 @@ const Characters = () => {
 
 	const searchedPage = searchParams.get('page') ?? '1';
 	const searchedCharacter = searchParams.get('character') ?? '';
+
 	const filterStatus = searchParams.get('status') ?? '';
 	const filterGender = searchParams.get('gender') ?? '';
 	const sortMethod: SortMethod = (searchParams.get('sortBy') as SortMethod) ?? '';
@@ -52,7 +53,7 @@ const Characters = () => {
 				<div className=" mt-4 text-center text-lg font-medium">Loading ...</div>
 			) : null}
 
-			<div className="bg-white w-full">
+			<div className="bg-white w-full dark:bg-black">
 				{data?.results ? (
 					<>
 						<CharactersList

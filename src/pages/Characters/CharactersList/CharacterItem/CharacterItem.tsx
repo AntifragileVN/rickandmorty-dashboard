@@ -1,4 +1,4 @@
-import { Character } from '@/shared/types';
+import type { Character } from 'rickmortyapi';
 
 import alive from '@/assets/alive.svg';
 import dead from '@/assets/dead.svg';

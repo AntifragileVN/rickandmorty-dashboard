@@ -1,5 +1,7 @@
-/// <reference types="vite-plugin-svgr/client" />
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+
+import useDebounce from '@/hooks/useDebounce';
 
 import BurgerIcon from '@/assets/burger.svg?react';
 
@@ -9,24 +11,29 @@ type HeaderProps = {
 
 const Header = ({ toggleSideBar }: HeaderProps) => {
 	const [searchParams, setSearchParams] = useSearchParams();
-	const searchedCharacter = searchParams.get('character') ?? '';
+	const [character, setCharacter] = useState(searchParams.get('character') ?? '');
+	const debouncedCharacter = useDebounce(character, 500);
 
-	const onSearchCharacterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const character = e.target.value.trim();
+	useEffect(() => {
 		setSearchParams((searchParams) => {
 			searchParams.set('page', '1');
 
-			if (character.length === 0) {
+			if (debouncedCharacter.length === 0) {
 				searchParams.delete('character');
 			} else {
-				searchParams.set('character', character);
+				searchParams.set('character', debouncedCharacter);
 			}
 			return searchParams;
 		});
+	}, [debouncedCharacter, setSearchParams]);
+
+	const onSearchCharacterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const character = e.target.value.trim();
+		setCharacter(character);
 	};
 
 	return (
-		<div className="flex h-16 fixed justify-start z-10 w-full py-2 bg-white border-b border-gray-200">
+		<div className="dark:bg-gray-950 dark:border-gray-600 flex h-16 fixed justify-start z-10 w-full py-2 bg-white border-b border-gray-200">
 			<div className="flex max-w-[1400px] mx-auto w-full justify-start items-center  px-4">
 				<button
 					onClick={toggleSideBar}
@@ -38,7 +45,7 @@ const Header = ({ toggleSideBar }: HeaderProps) => {
 					className="mx-4 w-full max-w-[500px] border rounded-md px-4 py-2"
 					type="text"
 					placeholder="Search"
-					value={searchedCharacter}
+					value={character}
 					onChange={onSearchCharacterChange}
 				/>
 			</div>

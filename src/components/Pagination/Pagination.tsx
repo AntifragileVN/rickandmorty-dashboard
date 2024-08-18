@@ -40,11 +40,11 @@ const Pagination = ({ pageQuantity, currentPage }: PaginationProps) => {
 	};
 
 	return (
-		<div className="flex justify-center w-full gap-x-4 bg-white rounded-lg pb-4 ">
+		<div className="flex justify-center align-middle w-full gap-x-4 bg-white dark:bg-black rounded-lg py-2 ">
 			<button
 				onClick={back}
 				className="h-12 border-2 border-r-0 border-indigo-600 hover:text-white
-               px-4 rounded-l-lg hover:bg-indigo-600  disabled:bg-gray-200"
+               px-4 rounded-l-lg hover:bg-indigo-600  disabled:bg-gray-200 dark:disabled:bg-gray-600"
 				disabled={currentPage === 1}
 			>
 				<ArrowIcon className="transform -rotate-90 stroke-black" />
@@ -61,7 +61,7 @@ const Pagination = ({ pageQuantity, currentPage }: PaginationProps) => {
 			<button
 				onClick={next}
 				className="h-12 border-2  border-indigo-600 hover:text-white
-               px-4 rounded-r-lg hover:bg-indigo-600  disabled:bg-gray-200 "
+               px-4 rounded-r-lg hover:bg-indigo-600  disabled:bg-gray-200 dark:disabled:bg-gray-600"
 				disabled={currentPage === pageQuantity}
 			>
 				<ArrowIcon className="transform rotate-90" />

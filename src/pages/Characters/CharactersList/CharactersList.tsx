@@ -1,4 +1,4 @@
-import { Character } from '@/shared/types';
+import { Character } from 'rickmortyapi';
 
 import CharacterItem from './CharacterItem/CharacterItem';
 
