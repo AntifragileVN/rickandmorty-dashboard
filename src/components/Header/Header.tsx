@@ -33,8 +33,8 @@ const Header = ({ toggleSideBar }: HeaderProps) => {
 	};
 
 	return (
-		<div className="dark:bg-gray-950 dark:border-gray-600 flex h-16 fixed justify-start z-10 w-full py-2 bg-white border-b border-gray-200">
-			<div className="flex max-w-[1400px] mx-auto w-full justify-start items-center  px-4">
+		<div className=" sm:px-0 dark:bg-gray-950 dark:border-gray-600 flex h-16 fixed justify-start z-10 w-full py-2 bg-white border-b border-gray-200">
+			<div className="container mx-auto px-4 flex max-w-[1400px]  w-full justify-start items-center">
 				<button
 					onClick={toggleSideBar}
 					className="text-gray-500 focus:outline-none focus:text-gray-700"

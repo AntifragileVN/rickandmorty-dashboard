@@ -42,7 +42,7 @@ const Characters = () => {
 	};
 
 	return (
-		<div className="w-full pt-16 max-w-[1400px] mx-auto items-center ">
+		<div className="container mx-auto px-4 sm:px-0 pt-16">
 			{error ? (
 				<div className=" mt-4 text-center text-lg font-medium">
 					There is no such character

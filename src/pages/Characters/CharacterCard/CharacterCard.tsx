@@ -13,7 +13,7 @@ type CharacterCardProps = {
 const CharacterCard = ({ characterInfo }: CharacterCardProps) => {
 	const { id, name, image, location, status, gender, type } = characterInfo;
 	return (
-		<div className="bg-white dark:bg-gray-950 dark:border-gray-200 rounded-lg p-5 flex items-center justify-between gap-5 text-lg">
+		<div className="bg-white dark:bg-gray-950 dark:border-gray-200 rounded-lg p-5 sm:flex sm:items-center sm:justify-between gap-5 text-lg">
 			<div className="relative">
 				<div className="absolute flex items-center justify-center top-8 right-[1%] w-10 h-10 bg-white rounded-full -translate-y-1/2 -translate-x-1/2">
 					{status === 'Dead' ? (
